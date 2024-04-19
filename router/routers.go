@@ -2,12 +2,21 @@ package router
 
 import (
 	"gin-frame/controllers"
-	"github.com/gin-gonic/gin"
+	"gin-frame/pkg/logger"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 func Router() *gin.Engine {
 	r := gin.Default()
+	// r.Use(gin.LoggerWithConfig(gin.LoggerConfig{
+	// 	SkipPaths: []string{},
+	// }))
+
+	// 添加中间件来记录请求日志
+	r.Use(logger.RequestLogger())
+	r.Use(logger.RecoveryMiddleware())
 
 	user := r.Group("/user")
 	{
