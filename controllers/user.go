@@ -1,15 +1,21 @@
 package controllers
 
 import (
+	. "gin-frame/models"
 	"github.com/gin-gonic/gin"
 )
 
 // 使用结构体来模拟类的行为，在go中没有类的概念，这样可以模块化代码，不会在同一个controllers下写同名的方法时报错
 type UserController struct{}
 
-func (u UserController) GetUserInfo(c *gin.Context) {
+func (u UserController) CreateUser(c *gin.Context) {
 	name := c.Param("name")
-	ResponseSuccess(c, 200, "success", "hello "+name, 0)
+	data := GetUserInfos(c, name)
+	if data.Error != nil {
+		ResponseError(c, 4001, gin.H{"err": data.Error})
+		return
+	}
+	ResponseSuccess(c, 200, "create user", name, 1)
 }
 
 func (u UserController) GetList(c *gin.Context) {

@@ -20,7 +20,7 @@ func Router() *gin.Engine {
 
 	user := r.Group("/user")
 	{
-		user.GET("/:name", controllers.UserController{}.GetUserInfo)
+		user.GET("/:name", controllers.UserController{}.CreateUser)
 
 		user.POST("/list", controllers.UserController{}.GetList)
 
