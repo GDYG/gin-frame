@@ -14,10 +14,6 @@ type User struct {
 	Name string
 }
 
-// type Tabler interface {
-// 	TableName() string
-// }
-
 func (User) TableName() string {
 	return "user"
 }

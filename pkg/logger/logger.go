@@ -15,11 +15,7 @@ func init() {
 	log.SetFormatter(&log.JSONFormatter{})
 	log.SetOutput(os.Stdout)
 	log.SetLevel(log.InfoLevel)
-
-	// 记录自定义日志
-	// log.WithFields(log.Fields{
-	// 	"custom_field": "custom_value",
-	// }).Info("Handled request")
+	log.SetReportCaller(true)
 }
 
 // RequestLogger 中间件用于记录请求日志

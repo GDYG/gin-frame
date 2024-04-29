@@ -1,2 +1,2 @@
 *.sh
-dao/*.go
+config/db_config.go
