@@ -2,6 +2,7 @@ package controllers
 
 import (
 	. "gin-frame/models"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -9,13 +10,19 @@ import (
 type UserController struct{}
 
 func (u UserController) CreateUser(c *gin.Context) {
-	name := c.Param("name")
+	name := c.PostForm("name")
+	if name == "" {
+		ResponseError(c, 4001, "name is empty")
+		return
+	}
 	data := GetUserInfos(c, name)
 	if data.Error != nil {
 		ResponseError(c, 4001, gin.H{"err": data.Error})
 		return
 	}
-	ResponseSuccess(c, 200, "create user", name, 1)
+	ResponseSuccess(c, 200, "create user", gin.H{
+		"name": name,
+	}, 1)
 }
 
 func (u UserController) GetList(c *gin.Context) {

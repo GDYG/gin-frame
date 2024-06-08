@@ -19,7 +19,6 @@ func (User) TableName() string {
 }
 
 func GetUserInfos(c *gin.Context, name string) *gorm.DB {
-	// dao.DB.AutoMigrate(&User{})
 	data := dao.DB.Create(&User{Name: name})
 	return data
 }

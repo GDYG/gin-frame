@@ -18,12 +18,16 @@ func Router() *gin.Engine {
 	r.Use(logger.RequestLogger())
 	r.Use(logger.RecoveryMiddleware())
 
+	// 前缀
 	user := r.Group("/user")
 	{
-		user.GET("/:name", controllers.UserController{}.CreateUser)
+		// 增
+		user.POST("/create", controllers.UserController{}.CreateUser)
 
-		user.POST("/list", controllers.UserController{}.GetList)
+		// 查
+		user.GET("/user", controllers.UserController{}.GetList)
 
+		// 改
 		user.PUT("/update", func(c *gin.Context) {
 			c.JSON(http.StatusOK, gin.H{
 				"code": 200,
@@ -32,7 +36,8 @@ func Router() *gin.Engine {
 			})
 		})
 
-		user.DELETE("/delete", func(c *gin.Context) {
+		// 删
+		user.DELETE("/delete/user", func(c *gin.Context) {
 			c.JSON(http.StatusOK, gin.H{
 				"code": 200,
 				"msg":  "success",
@@ -41,6 +46,7 @@ func Router() *gin.Engine {
 		})
 	}
 
+	// 其他前缀
 	order := r.Group("/order")
 	{
 		order.POST("/list", controllers.OrderController{}.GetList)
