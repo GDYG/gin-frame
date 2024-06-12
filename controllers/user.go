@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	. "gin-frame/models"
 
 	"github.com/gin-gonic/gin"
@@ -15,7 +16,7 @@ func (u UserController) CreateUser(c *gin.Context) {
 		ResponseError(c, 4001, "name is empty")
 		return
 	}
-	data := GetUserInfos(c, name)
+	data := CreateUserInfos(c, name)
 	if data.Error != nil {
 		ResponseError(c, 4001, gin.H{"err": data.Error})
 		return
@@ -39,7 +40,15 @@ func (u UserController) GetList(c *gin.Context) {
 	// ResponseError(c, 4004, num3)
 	// defer recover panic 异常处理
 
-	ResponseError(c, 4004, "相关信息不存在！")
+	data, result := GetUserList(c)
 
-	// ResponseSuccess(c, 200, "success", []string{"gdyg", "gdyg1", "gdyg2"})
+	//打印result
+	fmt.Println(result)
+
+	if data.Error != nil {
+		ResponseError(c, 4004, "获取列表失败")
+		return
+	}
+
+	ResponseSuccess(c, 200, "success", result, data.RowsAffected)
 }

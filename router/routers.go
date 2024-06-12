@@ -25,7 +25,7 @@ func Router() *gin.Engine {
 		user.POST("/create", controllers.UserController{}.CreateUser)
 
 		// 查
-		user.GET("/user", controllers.UserController{}.GetList)
+		user.GET("/list", controllers.UserController{}.GetList)
 
 		// 改
 		user.PUT("/update", func(c *gin.Context) {
