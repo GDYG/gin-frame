@@ -25,6 +25,7 @@ func Router() *gin.Engine {
 		user.POST("/create", controllers.UserController{}.CreateUser)
 
 		// 查
+		user.GET("/info/:id", controllers.UserController{}.GetUserInfo)
 		user.GET("/list", controllers.UserController{}.GetList)
 
 		// 改

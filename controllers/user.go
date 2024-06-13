@@ -3,6 +3,7 @@ package controllers
 import (
 	"fmt"
 	. "gin-frame/models"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -47,6 +48,18 @@ func (u UserController) GetList(c *gin.Context) {
 
 	if data.Error != nil {
 		ResponseError(c, 4004, "获取列表失败")
+		return
+	}
+
+	ResponseSuccess(c, 200, "success", result, data.RowsAffected)
+}
+
+func (u UserController) GetUserInfo(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	data, result := GetUserInfos(c, id)
+
+	if data.Error != nil {
+		ResponseError(c, 4004, "获取用户信息失败")
 		return
 	}
 

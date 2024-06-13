@@ -25,9 +25,10 @@ func CreateUserInfos(c *gin.Context, name string) *gorm.DB {
 }
 
 // 通过id获取用户信息
-func GetUserInfos(c *gin.Context, id int) *gorm.DB {
-	data := dao.DB.First(&User{}, id)
-	return data
+func GetUserInfos(c *gin.Context, id int) (*gorm.DB, User) {
+	result := User{}
+	data := dao.DB.Model(&User{}).First(&result, id)
+	return data, result
 }
 
 // 获取用户列表
