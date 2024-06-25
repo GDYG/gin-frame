@@ -29,13 +29,7 @@ func Router() *gin.Engine {
 		user.GET("/list", controllers.UserController{}.GetList)
 
 		// 改
-		user.PUT("/update", func(c *gin.Context) {
-			c.JSON(http.StatusOK, gin.H{
-				"code": 200,
-				"msg":  "success",
-				"data": "update success",
-			})
-		})
+		user.PUT("/update", controllers.UserController{}.UpdateUser)
 
 		// 删
 		user.DELETE("/delete/user", func(c *gin.Context) {

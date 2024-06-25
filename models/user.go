@@ -6,6 +6,7 @@ import (
 	// "gorm.io/gorm"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 type User struct {
@@ -36,6 +37,14 @@ func GetUserList(c *gin.Context) (*gorm.DB, []User) {
 	result := make([]User, 0)
 	data := dao.DB.Model(&User{}).Find(&result)
 	return data, result
+}
+
+// 更新用户信息
+func UpdateUserInfos(c *gin.Context, id int, name string) (*gorm.DB, []User) {
+	var users []User
+	data := dao.DB.Model(&users).Clauses(clause.Returning{Columns: []clause.Column{{Name: "name"}}}).Where("id = ?", id).Updates(map[string]interface{}{"name": name})
+
+	return data, users
 }
 
 // 删除用户信息

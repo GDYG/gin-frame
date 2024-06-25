@@ -65,3 +65,14 @@ func (u UserController) GetUserInfo(c *gin.Context) {
 
 	ResponseSuccess(c, 200, "success", result, data.RowsAffected)
 }
+
+func (u UserController) UpdateUser(c *gin.Context) {
+	id, _ := strconv.Atoi(c.PostForm("id"))
+	name := c.PostForm("name")
+	data, users := UpdateUserInfos(c, id, name)
+	if data.Error != nil {
+		ResponseError(c, 4004, "更新用户信息失败")
+		return
+	}
+	ResponseSuccess(c, 200, "success", users, data.RowsAffected)
+}
