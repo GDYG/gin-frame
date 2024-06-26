@@ -3,7 +3,6 @@ package router
 import (
 	"gin-frame/controllers"
 	"gin-frame/pkg/logger"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -32,13 +31,7 @@ func Router() *gin.Engine {
 		user.PUT("/update", controllers.UserController{}.UpdateUser)
 
 		// 删
-		user.DELETE("/delete/user", func(c *gin.Context) {
-			c.JSON(http.StatusOK, gin.H{
-				"code": 200,
-				"msg":  "success",
-				"data": "delete success",
-			})
-		})
+		user.DELETE("/delete/:id", controllers.UserController{}.DeleteUser)
 	}
 
 	// 其他前缀

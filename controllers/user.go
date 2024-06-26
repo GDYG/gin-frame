@@ -67,12 +67,24 @@ func (u UserController) GetUserInfo(c *gin.Context) {
 }
 
 func (u UserController) UpdateUser(c *gin.Context) {
-	id, _ := strconv.Atoi(c.PostForm("id"))
+	id, _ := strconv.Atoi(c.Param("id"))
 	name := c.PostForm("name")
-	data, users := UpdateUserInfos(c, id, name)
+	data, user := UpdateUserInfos(c, id, name)
 	if data.Error != nil {
 		ResponseError(c, 4004, "更新用户信息失败")
 		return
 	}
-	ResponseSuccess(c, 200, "success", users, data.RowsAffected)
+	ResponseSuccess(c, 200, "success", user, data.RowsAffected)
+}
+
+func (u UserController) DeleteUser(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	data, user := DeleteUserInfos(c, id)
+	// 输出id
+	fmt.Println(id)
+	if data.Error != nil {
+		ResponseError(c, 4004, "删除用户信息失败")
+		return
+	}
+	ResponseSuccess(c, 200, "success", user, data.RowsAffected)
 }

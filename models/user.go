@@ -16,7 +16,7 @@ type User struct {
 }
 
 func (User) TableName() string {
-	return "user"
+	return "users"
 }
 
 // 添加用户
@@ -43,12 +43,12 @@ func GetUserList(c *gin.Context) (*gorm.DB, []User) {
 func UpdateUserInfos(c *gin.Context, id int, name string) (*gorm.DB, []User) {
 	var users []User
 	data := dao.DB.Model(&users).Clauses(clause.Returning{Columns: []clause.Column{{Name: "name"}}}).Where("id = ?", id).Updates(map[string]interface{}{"name": name})
-
 	return data, users
 }
 
 // 删除用户信息
-func DeleteUserInfos(c *gin.Context, id int) *gorm.DB {
-	data := dao.DB.Delete(&User{}, id)
-	return data
+func DeleteUserInfos(c *gin.Context, id int) (*gorm.DB, []User) {
+	var users []User
+	data := dao.DB.Clauses(clause.Returning{Columns: []clause.Column{{Name: "name"}}}).Delete(&users, id)
+	return data, users
 }
