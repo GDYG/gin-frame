@@ -1,4 +1,4 @@
-# 使用Go + Gin + Gorm + MySQL + Redis搭建的一个基于Gin框架的企业级开发脚手架
+# 使用Go + Gin + Gorm + MySQL + Redis搭建的一个基于Gin框架的WEB应用框架
 
 ## 使用的Go版本：go version go1.22.1 darwin/amd64
 
