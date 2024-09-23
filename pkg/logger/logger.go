@@ -22,7 +22,7 @@ func init() {
 func RequestLogger() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// 设置日志输出到文件
-		log.AddHook(NewLfsHook("runtime/logs", "request"))
+		NewLfsHook("runtime/logs", "request")
 		// 在处理请求之前记录请求日志
 		log.WithFields(log.Fields{
 			"method": c.Request.Method,
