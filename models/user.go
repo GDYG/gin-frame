@@ -1,10 +1,13 @@
 package models
 
 import (
+	"encoding/json"
 	dao "gin-frame/dao"
+	_redis "gin-frame/pkg/redis"
+	"strconv"
 
-	// "gorm.io/gorm"
 	"github.com/gin-gonic/gin"
+	"github.com/redis/go-redis/v9"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )
@@ -28,8 +31,24 @@ func CreateUserInfos(c *gin.Context, name string) *gorm.DB {
 // 通过id获取用户信息
 func GetUserInfos(c *gin.Context, id int) (*gorm.DB, User) {
 	result := User{}
-	data := dao.DB.Model(&User{}).First(&result, id)
-	return data, result
+	rdb := _redis.InitRedis()
+	defer rdb.Close()
+	key := "user_" + strconv.Itoa(id)
+	jsonStr, err := rdb.Get(c, key).Bytes()
+
+	if err == redis.Nil {
+		data := dao.DB.Model(&User{}).First(&result, id)
+		value, _ := json.Marshal(result)
+		rdb.Set(c, key, string(value), 0)
+
+		return data, result
+	}
+
+	errJson := json.Unmarshal(jsonStr, &result)
+	if errJson != nil {
+		panic(errJson)
+	}
+	return dao.DB, result
 }
 
 // 获取用户列表
